@@ -12,8 +12,10 @@ app.use(express.json()); // Middleware cho việc xử lý JSON
 app.use('/account', account);
 app.use('/api', routers);
 
+
+const linkOnline = 'mongodb+srv://admin:1@cluster0.flmz7.mongodb.net/mydatabase2'
 const mongoURL = 'mongodb://localhost:27017/mydatabase2';
-mongoose.connect(mongoURL)
+mongoose.connect(linkOnline)
     .then(() => {
         console.log('Đã kết nối thành công với MongoDB');
     })

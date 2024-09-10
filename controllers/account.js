@@ -15,7 +15,7 @@ exports.danhsachAcc = async (req, res) => {
         const xemDSaccount = await account.find();
         return res.status(200).json(xemDSaccount);
     } catch (error) {
-        console.error(error);  // Log lỗi để xem có lỗi gì xảy ra
+        console.error(error);
         return res.status(500).send('Internal Server Error');
     }
 };
@@ -32,17 +32,17 @@ exports.addAcc = async (req, res, next) => {
                 role: role,
             });
 
-            await objAccount.save();  // Lưu tài khoản vào database
+            await objAccount.save();
 
             let msg = 'Thêm thành công, id mới = ' + objAccount._id;
-            console.log(msg);  // Log để kiểm tra quá trình lưu thành công
+            console.log(msg);
 
-            return res.redirect('/account/danhsach');  // Chuyển hướng sau khi thêm thành công 
+            return res.redirect('/account/danhsach');
         } else {
             return res.status(400).send('Invalid request method');
         }
     } catch (error) {
-        console.error(error);  // Log lỗi
+        console.error(error);
         return res.status(500).send('Internal Server Error');
     }
 };
