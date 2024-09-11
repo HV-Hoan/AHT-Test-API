@@ -4,23 +4,18 @@ const Account = require("../models/account");
 
 
 exports.dangnhap = async (req, res, next) => {
-    try {
+    // try {
+    //     if (req.role === "admin") {
+    //         console.log("Chao mung Admin");
+    //     } else {
+    //         console.log("Chao mung user");
+    //     }
+    // } catch (error) {
 
-    } catch (error) {
-
-    }
+    // }
 }
 
 
-// exports.danhsachAcc = async (req, res) => {
-//     try {
-//         const xemDSaccount = await Account.find();
-//         return res.status(200).json(xemDSaccount);
-//     } catch (error) {
-//         console.error(error);
-//         return res.status(500).send('Loi server ');
-//     }
-// };
 
 exports.danhsachAcc = async (req, res, next) => {
     try {
@@ -39,9 +34,12 @@ exports.xemCT = async (req, res, next) => {
         const xemCT = await Account.findOne({ _id: findID });
 
         if (!xemCT) {
-            return res.status(404).json({ message: " khong tim thay doi tuong " });
+            return res.status(404).json({ message: " Không tìm thấy đối tượng " });
         }
 
+
+        let msg = 'Tìm thấy đối tượng ' + findID;
+        console.log(msg);
         return res.status(200).json({ product: xemCT });
     } catch (error) {
 
@@ -53,6 +51,13 @@ exports.addAcc = async (req, res, next) => {
     try {
         if (req.method === "POST") {
             let { username, password, role } = req.body;
+
+
+            if (!username || !password) {
+                let msg = "Username và password không được để trống!";
+                console.log(msg);
+                return res.status(400).send(msg);
+            }
 
             let objAccount = new Account({
                 username: username,
@@ -66,26 +71,45 @@ exports.addAcc = async (req, res, next) => {
 
             return res.redirect('/acc/danhsach');
         } else {
-            return res.status(400).send('Khong hop le');
+            return res.status(400).send('Không hợp lệ');
         }
     } catch (error) {
         console.error(error);
-        return res.status(500).send('Loi server roi');
+        return res.status(500).send('Lỗi server rồi');
     }
 };
 exports.xoa = async (req, res, next) => {
     try {
-        const findID = req.params.id
+        const findID = req.params.id;
         const xoaAcc = await Account.findByIdAndDelete(findID);
-
         if (!xoaAcc) {
-            return res.status(404).json({ message: " khong co doi tuong" });
+            return res.status(404).json({ message: " Không có đối tượng" });
         };
 
-        let msg = "xoa thanh cong";
+        let msg = 'Xóa đối tượng có ID: ' + findID;
         console.log(msg);
+
         return res.redirect('/acc/danhsach');
     } catch (error) {
 
     }
 };
+exports.update = async (req, res, next) => {
+    try {
+        const findID = req.params.id;
+        const { username, password } = req.body;
+        const upDB = await Account.findByIdAndUpdate(findID,
+            { username, password },
+            { new: true, runValidators: true } // new: true để trả về đối tượng cập nhật, runValidators: true để chạy các validators
+        );
+        if (!updatedProduct) {
+            return res.status(404).json({ message: 'Không tìm thấy sản phẩm' });
+        }
+        let msg = 'Thêm thành công, id mới = ' + findID;
+        console.log(msg);
+        return res.status(200).json({ message: 'Cập nhật thành công', product: upDB });
+
+    } catch (error) {
+
+    }
+}

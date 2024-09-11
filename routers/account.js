@@ -14,5 +14,7 @@ router.get('/:id', ctrl.xemCT);
 
 router.delete('/:id', ctrl.xoa);
 
+router.put('/:id', ctrl.update);
+
 
 module.exports = router;
