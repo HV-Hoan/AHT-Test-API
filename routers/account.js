@@ -6,7 +6,7 @@ var { checkAdmin } = require("../Middleware/checkRole");
 
 router.get('/login', checkAdmin, ctrl.dangnhap);
 
-router.get('/danhsach', ctrl.danhsachAcc);
+router.get('/list', ctrl.danhsachAcc);
 
 router.post('/add', ctrl.addAcc);
 
