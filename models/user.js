@@ -6,7 +6,5 @@ const userCheme = new mongoose.Schema({
 
 });
 
-// Tạo model từ scheme  
 const User = mongoose.model('User', userCheme);
-
 module.exports = User;
