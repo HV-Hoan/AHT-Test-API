@@ -52,11 +52,11 @@ exports.ThemSanPham = async (req, res, next) => {
 exports.sua = async (req, res, next) => {
     try {
         const productId = req.params.id;
-        const { name, price, description } = req.body;
+        const { name, price } = req.body;
 
         const updatedProduct = await Product.findByIdAndUpdate(
             productId,
-            { name, price, description },
+            { name, price },
             { new: true, runValidators: true } // new: true để trả về đối tượng cập nhật, runValidators: true để chạy các validators
         );
 

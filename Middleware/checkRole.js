@@ -2,7 +2,7 @@ function checkAdmin(req, res, next) {
     if (req.user && req.user.role === 'admin') {
         next();
     } else {
-        res.status(403).send('Xac nhan la Admin.');
+        res.status(403).send('Khong phai la Admin.');
     }
 }
 
@@ -10,7 +10,7 @@ function checkUser(req, res, next) {
     if (req.user && req.user.role === 'user') {
         next();
     } else {
-        res.status(403).send('Xac nhan la User.');
+        res.status(403).send('Khong phai la User.');
     }
 }
 

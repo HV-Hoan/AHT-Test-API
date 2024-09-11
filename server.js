@@ -9,9 +9,9 @@ const port = 3030;
 
 app.use(express.json()); // Middleware cho việc xử lý JSON
 
-app.use('/account', account);
-app.use('/api', routers);
 
+app.use('/api', routers);
+app.use('/acc', account);
 
 const linkOnline = 'mongodb+srv://admin:1@cluster0.flmz7.mongodb.net/mydatabase2'
 const mongoURL = 'mongodb://localhost:27017/mydatabase2';
