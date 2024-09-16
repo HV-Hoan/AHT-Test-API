@@ -18,12 +18,13 @@ exports.xemchitiet = async (req, res, next) => {
         const ShowProducts = await Product.findOne({ _id: showID });
 
         if (!ShowProducts) {
-            return res.status(404).json({ message: "khong tim thay doi tuong" });
+            return res.status(404).json({ message: "Không tìm thấy đối tượng" });
         }
-        msg = " da tim thay doi tuong"
+        msg = " Đã tìm thấy dối tượng"
         return res.status(200).json({ message: msg, product: ShowProducts });
     } catch (error) {
-
+        console.error('Login error:', error);
+        return res.status(500).json({ message: 'Internal server error' });
     }
 };
 
@@ -41,11 +42,12 @@ exports.ThemSanPham = async (req, res, next) => {
 
             await objProduct.save();
 
-            let msg = 'Thêm thành công, id mới = ' + objProduct._id;
-            return res.redirect('/api/danhsach');
+            let msg = 'Thêm thành công id mới = ' + objProduct._id;
+            //return res.redirect('/api/danhsach');
         }
     } catch (error) {
-
+        console.error('Login error:', error);
+        return res.status(500).json({ message: 'Internal server error' });
     }
 }
 
@@ -66,7 +68,8 @@ exports.sua = async (req, res, next) => {
         return res.status(200).json({ message: 'Cập nhật thành công', product: updatedProduct });
 
     } catch (error) {
-
+        console.error('Login error:', error);
+        return res.status(500).json({ message: 'Internal server error' });
     }
 }
 
@@ -76,13 +79,14 @@ exports.xoa = async (req, res, next) => {
         const xoaSP = await Product.findByIdAndDelete(productID);
 
         if (!xoaSP) {
-            return res.status(404).json({ message: " khong co doi tuong" });
+            return res.status(404).json({ message: " Không có đối tượng" });
         }
 
-        msg = "da xoa san pham thanh cong";
-        return res.redirect('/api/danhsach');
+        msg = "Xóa sản phẩm thành công";
+        //return res.redirect('/api/danhsach');
     } catch (error) {
-
+        console.error('Login error:', error);
+        return res.status(500).json({ message: 'Internal server error' });
     }
 }
 
