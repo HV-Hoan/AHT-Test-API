@@ -3,6 +3,8 @@ const routers = require('./src/routers/authRouter');
 const { errCheck } = require('./src/middlewares/errorHandler');
 const app = express();
 const port = 3030;
+const dotenv = require('dotenv');
+dotenv.config();
 
 const mongoose = require('mongoose');
 

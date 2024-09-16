@@ -9,7 +9,7 @@ const TOKEN_SEC_KEY = process.env.TOKEN_SEC_KEY;
 
 exports.dangnhap = async (req, res, next) => {
     try {
-        const { username, password } = req.body
+        const { username, password, role } = req.body
         const user = await Account.findOne({ username })
         console.log(user);
 
@@ -19,20 +19,20 @@ exports.dangnhap = async (req, res, next) => {
             })
         }
 
-        const token = jwt.sign({ _id: Account._id }, 'hoan', { expiresIn: '1h' });
+        const token = jwt.sign({ _id: user._id, role: user.role }, 'hoan', { expiresIn: '1h' });
         console.log("Token: " + token);
 
-        //const token = jwt.sign({ _id: Account._id }, process.env.TOKEN_SEC_KEY, { expiresIn: '1h' })
 
         //ẩn password
         user.password = undefined
+
         if (!user) {
             return res.status(400).json({
                 message: "Đăng nhập không thành công"
             })
         }
 
-        console.log("Dang nhap thanh cong");
+
         return res.status(200).json({
             message: "Đăng nhập thành công",
             datas: { ...user.toObject(), accessToken: token }
