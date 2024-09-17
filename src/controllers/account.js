@@ -22,7 +22,6 @@ exports.dangnhap = async (req, res, next) => {
         const token = jwt.sign({ _id: user._id, role: user.role }, 'hoan', { expiresIn: '1h' });
         console.log("Token: " + token);
 
-
         //ẩn password
         user.password = undefined
 
@@ -31,7 +30,6 @@ exports.dangnhap = async (req, res, next) => {
                 message: "Đăng nhập không thành công"
             })
         }
-
 
         return res.status(200).json({
             message: "Đăng nhập thành công",
@@ -55,7 +53,6 @@ exports.danhsachAcc = async (req, res, next) => {
     }
 
 };
-
 exports.xemCT = async (req, res, next) => {
     try {
         const findID = req.params.id;
@@ -74,8 +71,6 @@ exports.xemCT = async (req, res, next) => {
         return res.status(500).json({ message: smg });
     }
 };
-
-
 exports.addAcc = async (req, res, next) => {
     try {
         if (req.method === "POST") {

@@ -10,8 +10,6 @@ exports.XemDanhSachSanPham = async (req, res) => {
         return res.status(500).json({ message: 'Lỗi khi lấy danh sách sản phẩm' });
     }
 };
-
-
 exports.xemchitiet = async (req, res, next) => {
     try {
         const showID = req.params.id
@@ -27,9 +25,6 @@ exports.xemchitiet = async (req, res, next) => {
         return res.status(500).json({ message: 'Internal server error' });
     }
 };
-
-
-
 exports.ThemSanPham = async (req, res, next) => {
     try {
         if (req.method === "POST") {
@@ -50,7 +45,6 @@ exports.ThemSanPham = async (req, res, next) => {
         return res.status(500).json({ message: 'Internal server error' });
     }
 }
-
 exports.sua = async (req, res, next) => {
     try {
         const productId = req.params.id;
@@ -72,7 +66,6 @@ exports.sua = async (req, res, next) => {
         return res.status(500).json({ message: 'Internal server error' });
     }
 }
-
 exports.xoa = async (req, res, next) => {
     try {
         const productID = req.params.id

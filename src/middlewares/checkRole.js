@@ -5,8 +5,6 @@ const TOKEN_SEC_KEY = process.env.TOKEN_SEC_KEY;
 
 const verifyRole = async (req, res, next) => {
     try {
-        console.log("Chạy qua đây 1: Bắt đầu kiểm tra token");
-
         const token = req.headers.authorization?.split(' ')[1]
         console.log("Token: " + token);
         if (!token) {
@@ -14,9 +12,6 @@ const verifyRole = async (req, res, next) => {
                 message: "Bạn chưa đăng nhập"
             });
         }
-
-        console.log("Chạy qua đây 2: Token hợp lệ, kiểm tra xác thực");
-
 
         // Giải mã token
         const decoded = jwt.verify(token, 'hoan');
@@ -34,16 +29,14 @@ const verifyRole = async (req, res, next) => {
             });
         }
 
-        console.log("Chạy qua đây 3: Người dùng tồn tại, kiểm tra quyền");
-
         if (user.role !== "admin") {
             return res.status(400).json({
                 message: "Bạn không có quyền"
             });
         }
 
-        console.log("Chạy qua đây 4: Người dùng có quyền, tiếp tục");
         next();
+
     } catch (error) {
         console.error("Lỗi:", error);
         return res.status(401).json({
