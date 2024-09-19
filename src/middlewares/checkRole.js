@@ -1,12 +1,11 @@
 const jwt = require('jsonwebtoken');
 const Account = require("../models/account");
-const TOKEN_SEC_KEY = process.env.TOKEN_SEC_KEY;
 
-
-const verifyRole = async (req, res, next) => {
+const verifyRole = allowedRoles => async (req, res, next) => {
     try {
         const token = req.headers.authorization?.split(' ')[1]
         console.log("Token: " + token);
+
         if (!token) {
             return res.status(400).json({
                 message: "Bạn chưa đăng nhập"
@@ -19,9 +18,6 @@ const verifyRole = async (req, res, next) => {
 
         // Tìm người dùng từ cơ sở dữ liệu
         const user = await Account.findById(decoded._id);
-        console.log(decoded._id);
-
-        console.log("Người dùng:", user);
 
         if (!user) {
             return res.status(403).json({
@@ -29,11 +25,14 @@ const verifyRole = async (req, res, next) => {
             });
         }
 
-        if (user.role !== "admin") {
+
+        // Kiểm tra role của người dùng
+        if (!allowedRoles.includes(user.role)) {
             return res.status(400).json({
                 message: "Bạn không có quyền"
             });
         }
+
 
         next();
 

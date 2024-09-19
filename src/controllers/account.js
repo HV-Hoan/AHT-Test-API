@@ -61,8 +61,6 @@ exports.xemCT = async (req, res, next) => {
         if (!xemCT) {
             return res.status(404).json({ message: " Không tìm thấy đối tượng " });
         }
-
-
         let msg = 'Tìm thấy đối tượng ' + findID;
         console.log(msg);
         return res.status(200).json({ message: msg, product: xemCT });
@@ -99,6 +97,7 @@ exports.addAcc = async (req, res, next) => {
             await objAccount.save();
             let msg = 'Thêm thành công id mới = ' + objAccount._id;
             console.log(msg);
+            return res.json(msg);
 
             //return res.redirect('/acc/danhsach');
         } else {
@@ -129,23 +128,18 @@ exports.xoa = async (req, res, next) => {
 exports.update = async (req, res, next) => {
     try {
         const findID = req.params.id;
-        console.log('ID:', findID);
-
-        const { username, password } = req.body;
-        console.log('Username:', username, 'Password:', password);
+        const { username, password, email, phoneNumber } = req.body;
 
         const upDB = await Account.findByIdAndUpdate(
             findID,
-            { username, password },
+            { username, password, email, phoneNumber },
             { new: true, runValidators: true } // new: true để trả về đối tượng cập nhật, runValidators: true để chạy các validators
         );
-        console.log('ID:', findID);
-        console.log('Dữ liệu cập nhật:', { username, password });
-        console.log('Tài khoản cập nhật:', upDB);
 
-        if (!updatedProduct) {
+        if (!upDB) {
             return res.status(404).json({ message: 'Không tìm thấy sản phẩm' });
         }
+
         let msg = 'Thêm thành công id mới = ' + findID;
         console.log(msg);
         return res.status(200).json({ message: 'Cập nhật thành công', product: upDB });

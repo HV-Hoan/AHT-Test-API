@@ -1,4 +1,3 @@
-const { json } = require("express");
 const Product = require("../models/products");
 
 
@@ -38,6 +37,7 @@ exports.ThemSanPham = async (req, res, next) => {
             await objProduct.save();
 
             let msg = 'Thêm thành công id mới = ' + objProduct._id;
+            return res.json(msg);
             //return res.redirect('/api/danhsach');
         }
     } catch (error) {
@@ -60,7 +60,6 @@ exports.sua = async (req, res, next) => {
             return res.status(404).json({ message: 'Không tìm thấy sản phẩm' });
         }
         return res.status(200).json({ message: 'Cập nhật thành công', product: updatedProduct });
-
     } catch (error) {
         console.error('Login error:', error);
         return res.status(500).json({ message: 'Internal server error' });
@@ -70,17 +69,14 @@ exports.xoa = async (req, res, next) => {
     try {
         const productID = req.params.id
         const xoaSP = await Product.findByIdAndDelete(productID);
-
         if (!xoaSP) {
             return res.status(404).json({ message: " Không có đối tượng" });
         }
-
         msg = "Xóa sản phẩm thành công";
+        return res.json(msg);
         //return res.redirect('/api/danhsach');
     } catch (error) {
         console.error('Login error:', error);
         return res.status(500).json({ message: 'Internal server error' });
     }
 }
-
-

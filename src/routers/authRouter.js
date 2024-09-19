@@ -2,6 +2,10 @@ var express = require('express');
 var router = express.Router();
 var ctrlProducts = require("../controllers/products");
 var ctrlAccounts = require("../controllers/account");
+var ctrlRooms = require("../controllers/rooms");
+var ctrlLandlords = require("../controllers/landlords");
+var ctrlBuidlings = require("../controllers/buildings");
+
 var verifyRole = require("../middlewares/checkRole");
 var wrapError = require("../middlewares/wrapError");
 
@@ -9,7 +13,7 @@ var wrapError = require("../middlewares/wrapError");
 
 
 // (['admin', 'user'])
-
+//account   
 router.post('/login', wrapError(ctrlAccounts.dangnhap));
 router.get('/login/admin/acc/list', verifyRole, wrapError(ctrlAccounts.danhsachAcc));
 router.get('/login/acc/:id', wrapError(ctrlAccounts.xemCT));
@@ -26,6 +30,19 @@ router.post("/login/admin/themproduct", verifyRole, wrapError(ctrlProducts.ThemS
 router.delete("/login/admin/product/:id", verifyRole, wrapError(ctrlProducts.xoa));
 router.put("/login/admin/product/:id", verifyRole, wrapError(ctrlProducts.sua));
 
+//Room
+router.get('/login/room/list', ctrlRooms.listRoom);
+router.post("/login/room/add", ctrlRooms.themRoom);
+router.put('/login/room/update/:id', verifyRole, ctrlRooms.updateRoom);
+
+
+//Landlord
+router.get('/login/landlord/list', ctrlLandlords.listLandlords);
+router.post('/login/landlord/add', verifyRole, ctrlLandlords.themLandlord);
+
+//Building
+router.post('/login/building/add', verifyRole(['admin', 'landlord']), ctrlBuidlings.themBuilding);
+router.put('/login/building/update/:id', ctrlBuidlings.updateBuilding);
 
 
 
