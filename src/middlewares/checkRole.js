@@ -4,7 +4,6 @@ const Account = require("../models/account");
 const verifyRole = allowedRoles => async (req, res, next) => {
     try {
         const token = req.headers.authorization?.split(' ')[1]
-        console.log("Token: " + token);
 
         if (!token) {
             return res.status(400).json({
@@ -14,7 +13,8 @@ const verifyRole = allowedRoles => async (req, res, next) => {
 
         // Giải mã token
         const decoded = jwt.verify(token, 'hoan');
-        console.log("Decoded Token:", decoded);
+        req.user = decoded;  // Gán thông tin user vào request
+
 
         // Tìm người dùng từ cơ sở dữ liệu
         const user = await Account.findById(decoded._id);

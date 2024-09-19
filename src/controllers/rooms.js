@@ -14,9 +14,14 @@ exports.listRoom = async (req, res, next) => {
 
 exports.themRoom = async (req, res, next) => {
     try {
+        // Kiểm tra xem req.user có tồn tại và có thuộc tính id không
+        if (!req.user || !req.user._id) {
+            return res.status(401).json({ message: 'User not authenticated' });
+        }
         if (req.method === "POST") {
             let { roomType, description, price, size } = req.body;
             let objRooms = new Room({
+                id_Landlord: req.user._id,
                 roomType: roomType,
                 description: description,
                 price: price,
@@ -24,8 +29,10 @@ exports.themRoom = async (req, res, next) => {
                 created_at: new Date().toISOString(),
                 updated_at: new Date().toISOString()
             });
-
             await objRooms.save();
+
+
+
 
             let msg = 'Thêm thành công phòng mới với id: ' + objRooms._id;
             return res.json(msg)
