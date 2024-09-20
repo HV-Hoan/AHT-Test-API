@@ -5,6 +5,7 @@ var ctrlAccounts = require("../controllers/account");
 var ctrlRooms = require("../controllers/rooms");
 var ctrlLandlords = require("../controllers/landlords");
 var ctrlBuidlings = require("../controllers/buildings");
+var ctrlPost = require("../controllers/posts");
 
 var verifyRole = require("../middlewares/checkRole");
 var wrapError = require("../middlewares/wrapError");
@@ -15,35 +16,37 @@ var wrapError = require("../middlewares/wrapError");
 // (['admin', 'user'])
 //account   
 router.post('/login', wrapError(ctrlAccounts.dangnhap));
-router.get('/login/admin/acc/list', verifyRole(['admin']), wrapError(ctrlAccounts.danhsachAcc));
-router.get('/login/acc/:id', wrapError(ctrlAccounts.xemCT));
-
+router.get('/login/acc/list', verifyRole(['admin']), wrapError(ctrlAccounts.danhsachAcc));
+router.get('/login/acc/read/:id', wrapError(ctrlAccounts.xemCT));
 router.post('/login/acc/add', wrapError(ctrlAccounts.addAcc));
-router.delete('/login/admin/acc/:id', verifyRole(['admin']), wrapError(ctrlAccounts.xoa));
-router.put('/login/admin/acc/:id', verifyRole(['admin']), wrapError(ctrlAccounts.update));
+router.delete('/login/acc/delete/:id', verifyRole(['admin']), wrapError(ctrlAccounts.xoa));
+router.put('/login/acc/update/:id', verifyRole(['admin']), wrapError(ctrlAccounts.update));
 
-
+///product
 router.get("/danhsach", wrapError(ctrlProducts.XemDanhSachSanPham));
 router.get("/:id", wrapError(ctrlProducts.xemchitiet));
-
-router.post("/login/admin/themproduct", verifyRole(['admin']), wrapError(ctrlProducts.ThemSanPham));
-router.delete("/login/admin/product/:id", verifyRole(['admin']), wrapError(ctrlProducts.xoa));
-router.put("/login/admin/product/:id", verifyRole(['admin']), wrapError(ctrlProducts.sua));
+router.post("/login/themproduct", verifyRole(['admin']), wrapError(ctrlProducts.ThemSanPham));
+router.delete("/login/product/:id", verifyRole(['admin']), wrapError(ctrlProducts.xoa));
+router.put("/login/product/:id", verifyRole(['admin']), wrapError(ctrlProducts.sua));
 
 //Room
 router.get('/login/room/list', ctrlRooms.listRoom);
-router.post("/login/room/add", verifyRole(['landlord']), ctrlRooms.themRoom);
-router.put('/login/room/update/:id', verifyRole(['landlord']), ctrlRooms.updateRoom);
+router.get('/login/room/read/:id', ctrlRooms.read);
+router.post("/login/room/add", verifyRole(['landlord']), wrapError(ctrlRooms.themRoom));
+router.put('/login/room/update/:id', verifyRole(['landlord']), wrapError(ctrlRooms.updateRoom));
+router.delete('/login/room/delete/:id', verifyRole(['landlord']), wrapError(ctrlRooms.delete));
 
 //Landlord
-router.get('/login/landlord/list', ctrlLandlords.listLandlords);
-router.post('/login/landlord/add', verifyRole(['admin']), ctrlLandlords.themLandlord);
+router.get('/login/landlord/list', wrapError(ctrlLandlords.listLandlords));
+router.post('/login/landlord/add', verifyRole(['admin']), wrapError(ctrlLandlords.themLandlord));
 
 //Building
-router.post('/login/building/add', verifyRole(['admin', 'landlord']), ctrlBuidlings.themBuilding);
-router.put('/login/building/update/:id', verifyRole(['admin', 'landlord']), ctrlBuidlings.updateBuilding);
+router.get('/login/building/list', wrapError(ctrlBuidlings.listBuilding));
+router.post('/login/building/add', verifyRole(['admin', 'landlord']), wrapError(ctrlBuidlings.themBuilding));
+router.put('/login/building/update/:id', verifyRole(['admin', 'landlord']), wrapError(ctrlBuidlings.updateBuilding));
 
-
-
+//Post
+router.post('/login/post/add', verifyRole(['user', 'admin', 'landlord']), wrapError(ctrlPost.addPost));
+router.put('/login/post/update/:id', wrapError(ctrlPost.update));
 
 module.exports = router;

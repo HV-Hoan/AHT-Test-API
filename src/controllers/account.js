@@ -2,9 +2,7 @@ const { json } = require("express");
 const jwt = require('jsonwebtoken');
 const Account = require("../models/account");
 const bcryptjs = require('bcryptjs');
-const TOKEN_SEC_KEY = process.env.TOKEN_SEC_KEY;
-
-
+const TOKEN = process.env.TOKEN;
 
 
 exports.dangnhap = async (req, res, next) => {
@@ -20,6 +18,7 @@ exports.dangnhap = async (req, res, next) => {
         }
 
         const token = jwt.sign({ _id: user._id, role: user.role }, 'hoan', { expiresIn: '1h' });
+        //const token = jwt.sign({ _id: user._id, role: user.role }, TOKEN, { expiresIn: '1h' });
         console.log("Token: " + token);
 
         //ẩn password
@@ -41,8 +40,6 @@ exports.dangnhap = async (req, res, next) => {
         return res.status(400).send({ error: 'Lỗi trong quá trình đăng nhập', details: error.message });
     }
 }
-
-
 exports.danhsachAcc = async (req, res, next) => {
 
     try {
@@ -73,21 +70,17 @@ exports.addAcc = async (req, res, next) => {
     try {
         if (req.method === "POST") {
             let { username, password, role } = req.body;
-
-
             // Kiểm tra xem username đã tồn tại chưa
             const existingUser = await Account.findOne({ username });
 
             if (existingUser) {
                 return res.status(400).json({ error: 'Username đã tồn tại. Vui lòng chọn username khác.' });
             }
-
             if (!username || !password) {
                 let msg = "Username và password không được để trống!";
                 console.log(msg);
                 return res.status(400).send(msg);
             }
-
             let objAccount = new Account({
                 username: username,
                 password: password,

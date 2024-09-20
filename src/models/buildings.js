@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const buildingChera = new mongoose.Schema({
+const buildingChema = new mongoose.Schema({
     address: { type: String, require: true },
     description: { type: String, require: true },
     number_of_floors: { type: String, require: true },
@@ -10,5 +10,5 @@ const buildingChera = new mongoose.Schema({
 
 
 
-const buildings = mongoose.model('Buildings', buildingChera);
+const buildings = mongoose.model('Buildings', buildingChema);
 module.exports = buildings;

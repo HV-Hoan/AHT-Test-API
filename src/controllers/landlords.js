@@ -14,9 +14,6 @@ exports.listLandlords = async (req, res, next) => {
         return res.status(500).json({ message: 'Lỗi khi lấy danh sách Landlords' });
     }
 };
-
-
-
 exports.themLandlord = async (req, res, next) => {
     try {
         if (req.method === "POST") {

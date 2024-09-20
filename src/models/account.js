@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const accountChera = new mongoose.Schema({
+const accountChema = new mongoose.Schema({
     fullname: { type: String, require: false },
     dob: { type: String, require: false },
     gender: { type: String, require: false },
@@ -13,5 +13,5 @@ const accountChera = new mongoose.Schema({
     role: { type: String, enum: ['user', 'admin', 'landlord'], default: 'user' },
 });
 
-const account = mongoose.model('Accounts', accountChera);
+const account = mongoose.model('Accounts', accountChema);
 module.exports = account;

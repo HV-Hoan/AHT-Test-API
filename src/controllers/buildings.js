@@ -1,5 +1,14 @@
 const Building = require("../models/buildings");
+const products = require("../models/products");
 
+exports.listBuilding = async (req, res, next) => {
+    try {
+        const listBuilding = await Building.find();
+        return res.json({ message: "Tim thay danh sach building", products: listBuilding });
+    } catch (error) {
+        return res.status(500).json({ message: 'Lỗi khi lấy danh sách building' });
+    }
+}
 exports.themBuilding = async (req, res, next) => {
     try {
         if (req.method === 'POST') {
@@ -22,7 +31,6 @@ exports.themBuilding = async (req, res, next) => {
         return res.status(500).json({ message: 'Internal server error' });
     }
 }
-
 exports.updateBuilding = async (req, res, next) => {
     try {
         const idBuilding = req.params.id;
@@ -32,13 +40,10 @@ exports.updateBuilding = async (req, res, next) => {
             { address, description, number_of_floors, updated_at: new Date().toISOString() },
             { new: true, runValidators: true }
         );
-
         if (!upBuild) {
             return res.status(404).json({ message: 'Không tìm thấy sản phẩm' });
         }
-
         return res.status(200).json({ message: 'Cập nhật thành công', product: upBuild });
-
     } catch (error) {
         smg = "Lỗi: " + error.message;
         return res.status(500).json({ message: smg });

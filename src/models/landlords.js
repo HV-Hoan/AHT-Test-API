@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const landlordChera = new mongoose.Schema({
+const landlordChema = new mongoose.Schema({
     id_User: { type: mongoose.Schema.Types.ObjectId, ref: 'Accounts' },
     company_Name: { type: String, require: true },
     contact_Number: { type: String, require: true },
@@ -11,5 +11,5 @@ const landlordChera = new mongoose.Schema({
 
 
 
-const landlords = mongoose.model('Landlords', landlordChera);
+const landlords = mongoose.model('Landlords', landlordChema);
 module.exports = landlords;
