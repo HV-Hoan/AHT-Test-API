@@ -4,7 +4,6 @@ exports.addPost = async (req, res, next) => {
     try {
         // Kiểm tra xem req.user có tồn tại và có thuộc tính id không
         console.log(req.user);
-
         if (!req.user || !req.user._id) {
             return res.status(401).json({ message: 'User not authenticated' });
         }
@@ -19,7 +18,7 @@ exports.addPost = async (req, res, next) => {
                 updated_at: new Date().toISOString()
             });
             await objPosts.save();
-            let msg = 'Thêm thành công phòng mới với id: ' + objPosts._id;
+            let msg = 'Đăng bài thành công với id: ' + objPosts._id;
             return res.json(msg);
         }
     } catch (error) {
@@ -27,11 +26,15 @@ exports.addPost = async (req, res, next) => {
         return res.status(500).json({ message: 'Internal server error' });
     }
 }
-
 exports.update = async (req, res, next) => {
     try {
         const findID = req.params.id;
         const { title, content, status } = req.body;
+        if (!title) {
+            let msg = "Bài đăng phải có tiêu đề!";
+            console.log(msg);
+            return res.status(400).send(msg);
+        }
         const update = await Post.findByIdAndUpdate(
             findID,
             { title, content, status, updated_at: new Date().toISOString() },
@@ -40,7 +43,23 @@ exports.update = async (req, res, next) => {
         if (!update) {
             return res.status(404).json({ message: 'Không tìm thấy bài đăng' });
         }
-        return res.status(200).json({ message: 'Cập nhật thành công', product: update });
+        return res.status(200).json({ message: 'Cập nhật thành công bài đăng', product: update });
+    } catch (error) {
+        console.error('Login error:', error);
+        return res.status(500).json({ message: 'Internal server error' });
+    }
+}
+exports.delete = async (req, res, next) => {
+    try {
+        const findID = req.params.id;
+        const deletePost = await Post.findByIdAndDelete(findID);
+        if (!deletePost) {
+            return res.status(404).json({ message: " Bài đăng không tồn tại" });
+        };
+
+        let msg = 'Xóa bài đăng có ID: ' + findID;
+        console.log(msg);
+        return res.json(msg);
     } catch (error) {
 
     }

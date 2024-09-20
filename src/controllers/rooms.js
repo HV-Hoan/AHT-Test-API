@@ -16,9 +16,9 @@ exports.read = async (req, res, next) => {
         const findID = req.params.id;
         const readID = await Room.findOne({ _id: findID });
         if (!readID) {
-            return res.json({ message: "Khong tim thay dau tuong" });
+            return res.json({ message: "Không tìm thấy phòng" });
         }
-        return res.json({ message: "Tim thay doi tuong " + findID, product: readID });
+        return res.json({ message: "Tìm thấy phòng với ID:  " + findID, product: readID });
     } catch (error) {
         console.error('Login error:', error);
         return res.status(500).json({ message: 'Internal server error' });
@@ -32,6 +32,28 @@ exports.themRoom = async (req, res, next) => {
         }
         if (req.method === "POST") {
             let { roomType, description, price, size } = req.body;
+
+            if (!roomType) {
+                let msg = "RoomType không được để trống!";
+                console.log(msg);
+                return res.status(400).send(msg);
+            }
+            if (!description) {
+                let msg = "description không được để trống!";
+                console.log(msg);
+                return res.status(400).send(msg);
+            }
+            if (!price) {
+                let msg = "price không được để trống!";
+                console.log(msg);
+                return res.status(400).send(msg);
+            }
+            if (!size) {
+                let msg = "size không được để trống!";
+                console.log(msg);
+                return res.status(400).send(msg);
+            }
+
             let objRooms = new Room({
                 id_Landlord: req.user._id,
                 roomType: roomType,
@@ -54,13 +76,33 @@ exports.updateRoom = async (req, res, next) => {
     try {
         const idRoom = req.params.id;
         const { roomType, description, price, size } = req.body;
+        if (!roomType) {
+            let msg = "RoomType không được để trống!";
+            console.log(msg);
+            return res.status(400).send(msg);
+        }
+        if (!description) {
+            let msg = "description không được để trống!";
+            console.log(msg);
+            return res.status(400).send(msg);
+        }
+        if (!price) {
+            let msg = "price không được để trống!";
+            console.log(msg);
+            return res.status(400).send(msg);
+        }
+        if (!size) {
+            let msg = "size không được để trống!";
+            console.log(msg);
+            return res.status(400).send(msg);
+        }
         const upRoom = await Room.findByIdAndUpdate(
             idRoom,
             { roomType, description, price, size, updated_at: new Date().toISOString() },
             { new: true, runValidators: true }
         );
         if (!upRoom) {
-            return res.status(404).json({ message: 'Không tìm thấy sản phẩm' });
+            return res.status(404).json({ message: 'Không tìm thấy phòng' });
         }
         return res.status(200).json({ message: 'Cập nhật thành công', product: upRoom });
     } catch (error) {
@@ -72,7 +114,13 @@ exports.delete = async (req, res, next) => {
     try {
         const findID = req.params.id;
         const deleteID = await Room.findByIdAndDelete(findID);
-        return json({ message: "Xoa thanh cong" });
+        if (!deleteID) {
+            return res.status(404).json({ message: " Không có đối tượng" });
+        };
+
+        let msg = 'Xóa phòng có ID: ' + findID;
+        console.log(msg);
+        return res.json(msg);
     } catch (error) {
         return json({ message: "Xoa that bai" })
     }

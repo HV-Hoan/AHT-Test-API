@@ -30,7 +30,7 @@ exports.themLandlord = async (req, res, next) => {
 
             await objLandlords.save();
 
-            let msg = 'Thêm thành công phòng mới với id: ' + objLandlords._id;
+            let msg = 'Thêm thành công chủ nhà mới với id: ' + objLandlords._id;
             return res.json(msg)
         }
     } catch (error) {

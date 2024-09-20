@@ -4,7 +4,7 @@ const products = require("../models/products");
 exports.listBuilding = async (req, res, next) => {
     try {
         const listBuilding = await Building.find();
-        return res.json({ message: "Tim thay danh sach building", products: listBuilding });
+        return res.json({ message: "Tìm thấy danh sách building", products: listBuilding });
     } catch (error) {
         return res.status(500).json({ message: 'Lỗi khi lấy danh sách building' });
     }
@@ -20,10 +20,8 @@ exports.themBuilding = async (req, res, next) => {
                 created_at: new Date().toISOString(),
                 updated_at: new Date().toISOString()
             });
-
             await objBuldings.save();
-
-            let msg = 'Thêm thành công phòng mới với id: ' + objBuldings._id;
+            let msg = 'Thêm thành công building mới với id: ' + objBuldings._id;
             return res.json(msg)
         }
     } catch (error) {
@@ -41,7 +39,7 @@ exports.updateBuilding = async (req, res, next) => {
             { new: true, runValidators: true }
         );
         if (!upBuild) {
-            return res.status(404).json({ message: 'Không tìm thấy sản phẩm' });
+            return res.status(404).json({ message: 'Không tồn tại' });
         }
         return res.status(200).json({ message: 'Cập nhật thành công', product: upBuild });
     } catch (error) {

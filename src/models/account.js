@@ -8,8 +8,8 @@ const accountChema = new mongoose.Schema({
     profile_picture_url: { type: String, require: false },
     username: { type: String, require: true },
     password: { type: String, require: true },
-    email: { type: String, require: false },
-    phoneNumber: { type: String, require: false },
+    email: { type: String, require: true },
+    phoneNumber: { type: String, require: true },
     role: { type: String, enum: ['user', 'admin', 'landlord'], default: 'user' },
 });
 

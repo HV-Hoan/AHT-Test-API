@@ -47,6 +47,7 @@ router.put('/login/building/update/:id', verifyRole(['admin', 'landlord']), wrap
 
 //Post
 router.post('/login/post/add', verifyRole(['user', 'admin', 'landlord']), wrapError(ctrlPost.addPost));
-router.put('/login/post/update/:id', wrapError(ctrlPost.update));
+router.put('/login/post/update/:id', verifyRole(['user', 'admin', 'landlord']), wrapError(ctrlPost.update));
+router.delete('/login/post/delete/:id', verifyRole(['user', 'admin', 'landlord']), wrapError(ctrlPost.delete));
 
 module.exports = router;
