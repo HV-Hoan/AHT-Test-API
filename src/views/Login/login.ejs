@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="row ">
+        <div class="w-100 h-100 bg-white p-5 card ">
+            <div class="text-center fs-5 fw-bold ">
+                <h2 style="color: rgb(255, 157, 0);">Đăng nhập</h2>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">username address</label>
+                <input type="username" class="form-control" id="username" placeholder="Username">
+            </div>
+            <div class="mb-3 d-grid ">
+                <label class="form-label">Password</label>
+                <input type="password" class="form-control" id="password">
+            </div>
+            <div class="mb-3 d-flex justify-content-center">
+                <button class="btn btn-warning osition-relative " id="btnDangNhap" style="color: white;">Đăng
+                    nhập</button>
+            </div>
+        </div>
+    </div>
+    <script>
+
+        const btnDangNhap = document.querySelector("#btnDangNhap")
+
+        btnDangNhap.addEventListener("click", login)
+        async function login() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const response = await fetch('/api/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    username: username,
+                    password: password
+                })
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                console.log("Phản hồi từ API:", data);  // Kiểm tra toàn bộ dữ liệu trả về từ API
+
+                if (data.datas.accessToken) {
+                    localStorage.setItem('hoan', data.datas.accessToken);  // Lưu token nếu có
+                    alert('Đăng nhập thành công');
+                    //next
+                    fetchData("/api/login/post/list");
+                } else {
+                    console.error("Không có token trong phản hồi:", data);
+                    alert('Không tìm thấy token trong phản hồi');
+                }
+            } else {
+                alert('Đăng nhập thất bại !!! Hãy kiểm tra lại.');
+            }
+        }
+
+        async function fetchData(link) {
+            const token = localStorage.getItem('hoan');
+            if (!token) {
+                alert('Không tìm thấy token, hãy kiểm tra lại');
+                return;
+            };
+
+            if (!link) {
+                console.error('Link chưa được xác định!');
+                return;
+            }
+
+            const response = await fetch(`${link}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            if (response.ok) {
+                const htmlContent = await response.text();
+                document.querySelector("body").innerHTML = htmlContent;
+            } else {
+                alert('Bạn không có quyền truy cập vào đây');
+            }
+        }
+    </script>
+</body>
+
+</html>

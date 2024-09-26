@@ -14,7 +14,6 @@ const verifyRole = allowedRoles => async (req, res, next) => {
         const decoded = jwt.verify(token, 'hoan');
         //const decoded = jwt.verify(token, TOKEN);
         req.user = decoded;  // Gán thông tin user vào request
-        // Tìm người dùng từ cơ sở dữ liệu
         const user = await Account.findById(decoded._id);
 
         if (!user) {

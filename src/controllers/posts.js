@@ -1,5 +1,31 @@
 const Post = require("../models/posts");
 
+
+
+// exports.list = async (req, res, next) => {
+//     try {
+//         const fildAll = await Post.find();
+
+//         // Render trang EJS và truyền dữ liệu fildAll vào view
+//         res.render('Post/listPost', { posts: fildAll });
+
+//     } catch (error) {
+//         console.error('Log error:', error);
+//         return res.status(500).json({ message: 'Internal server error' });
+//     }
+// };
+exports.list = async (req, res, next) => {
+    try {
+        const fildAll = await Post.find();
+        res.render('Post/listPost');
+        return res.json({ fildAll });
+
+    } catch (error) {
+        console.error('Log error:', error);
+        return res.status(500).json({ message: 'Internal server error' });
+    }
+}
+
 exports.addPost = async (req, res, next) => {
     try {
         // Kiểm tra xem req.user có tồn tại và có thuộc tính id không
@@ -22,7 +48,7 @@ exports.addPost = async (req, res, next) => {
             return res.json(msg);
         }
     } catch (error) {
-        console.error('Login error:', error);
+        console.error('Log error:', error);
         return res.status(500).json({ message: 'Internal server error' });
     }
 }
@@ -45,7 +71,7 @@ exports.update = async (req, res, next) => {
         }
         return res.status(200).json({ message: 'Cập nhật thành công bài đăng', product: update });
     } catch (error) {
-        console.error('Login error:', error);
+        console.error('Log error:', error);
         return res.status(500).json({ message: 'Internal server error' });
     }
 }
@@ -56,7 +82,6 @@ exports.delete = async (req, res, next) => {
         if (!deletePost) {
             return res.status(404).json({ message: " Bài đăng không tồn tại" });
         };
-
         let msg = 'Xóa bài đăng có ID: ' + findID;
         console.log(msg);
         return res.json(msg);

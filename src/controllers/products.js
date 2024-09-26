@@ -38,7 +38,6 @@ exports.ThemSanPham = async (req, res, next) => {
 
             let msg = 'Thêm thành công id mới = ' + objProduct._id;
             return res.json(msg);
-            //return res.redirect('/api/danhsach');
         }
     } catch (error) {
         console.error('Login error:', error);
@@ -74,7 +73,6 @@ exports.xoa = async (req, res, next) => {
         }
         msg = "Xóa sản phẩm thành công";
         return res.json(msg);
-        //return res.redirect('/api/danhsach');
     } catch (error) {
         console.error('Login error:', error);
         return res.status(500).json({ message: 'Internal server error' });

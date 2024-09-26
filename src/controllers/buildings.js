@@ -25,7 +25,7 @@ exports.themBuilding = async (req, res, next) => {
             return res.json(msg)
         }
     } catch (error) {
-        console.error('Login error:', error);
+        console.error('Log error:', error);
         return res.status(500).json({ message: 'Internal server error' });
     }
 }

@@ -5,11 +5,15 @@ const bcryptjs = require('bcryptjs');
 const TOKEN = process.env.TOKEN;
 
 
+
+exports.ScreenLogin = (req, res) => {
+    res.render('Login/login');
+}
+
 exports.dangnhap = async (req, res, next) => {
     try {
         const { username, password, role } = req.body
         const user = await Account.findOne({ username })
-        console.log(user);
         if (!user) {
             return res.status(400).json({
                 message: "Username hoặc Password không đúng"
@@ -17,8 +21,8 @@ exports.dangnhap = async (req, res, next) => {
         }
         const token = jwt.sign({ _id: user._id, role: user.role }, 'hoan', { expiresIn: '1h' });
         //const token = jwt.sign({ _id: user._id, role: user.role }, TOKEN, { expiresIn: '1h' });
-        console.log("Token: " + token);
-        //ẩn password
+        // console.log("Token: " + token);
+        //ẩn password 
         user.password = undefined
         if (!user) {
             return res.status(400).json({
@@ -47,7 +51,7 @@ exports.xemCT = async (req, res, next) => {
         const findID = req.params.id;
         const xemCT = await Account.findOne({ _id: findID });
         if (!xemCT) {
-            return res.status(404).json({ message: " Không tìm thấy đối tượng " });
+            return res.json({ message: " Không tìm thấy đối tượng " });
         }
         let msg = 'Tìm thấy đối tượng ' + findID;
         console.log(msg);
@@ -65,11 +69,11 @@ const validateEmail = (email) => {
 const validatePhoneNumber = (phoneNumber) => {
     return /^\d{10,15}$/.test(phoneNumber);
 };
+
 exports.addAcc = async (req, res, next) => {
     try {
         if (req.method === "POST") {
             let { username, password, email, phoneNumber, role } = req.body;
-            // Kiểm tra xem username đã tồn tại chưa
             const existingUser = await Account.findOne({ username });
             if (existingUser) {
                 return res.status(400).json({ error: 'Username đã tồn tại. Vui lòng chọn username khác.' });
@@ -101,7 +105,6 @@ exports.addAcc = async (req, res, next) => {
             let msg = 'Thêm thành công id mới = ' + objAccount._id;
             console.log(msg);
             return res.json(msg);
-            //return res.redirect('/acc/danhsach');
         } else {
             return res.status(400).send('Không hợp lệ');
         }
@@ -121,7 +124,6 @@ exports.xoa = async (req, res, next) => {
         let msg = 'Xóa tài khoản có ID: ' + findID;
         console.log(msg);
 
-        //return res.redirect('/acc/danhsach');
     } catch (error) {
         smg = "Lỗi: " + error.message;
         return res.status(500).json({ message: smg });

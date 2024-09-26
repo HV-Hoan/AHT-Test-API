@@ -1,7 +1,15 @@
 const express = require('express');
-const routers = require('./src/routers/authRouter');
-const { errCheck } = require('./src/middlewares/errorHandler');
+const routers = require('./routers/authRouter');
+const errCheck = require('./middlewares/errorHandler');
 const app = express();
+const path = require('path');
+
+// Cấu hình view engine là EJS
+app.set('view engine', 'ejs');
+
+// Đảm bảo Express biết tìm các file view trong thư mục 'views'
+app.set('views', path.join(__dirname, 'src/views'));
+
 const port = 3030;
 
 const dotenv = require('dotenv');
@@ -23,12 +31,7 @@ mongoose.connect(linkOnline)
 
 app.use(express.json()); // Middleware cho việc xử lý JSON
 
-
 app.use('/api', routers);
-
-//app.use(errCheck());
+// app.use(errCheck);
 
 module.exports = app;
-
-
-

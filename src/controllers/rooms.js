@@ -20,7 +20,7 @@ exports.read = async (req, res, next) => {
         }
         return res.json({ message: "Tìm thấy phòng với ID:  " + findID, product: readID });
     } catch (error) {
-        console.error('Login error:', error);
+        console.error('Log error:', error);
         return res.status(500).json({ message: 'Internal server error' });
     }
 }
@@ -68,7 +68,7 @@ exports.themRoom = async (req, res, next) => {
             return res.json(msg);
         }
     } catch (error) {
-        console.error('Login error:', error);
+        console.error('Log error:', error);
         return res.status(500).json({ message: 'Internal server error' });
     }
 };
