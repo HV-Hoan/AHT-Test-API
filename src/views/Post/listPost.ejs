@@ -9,15 +9,15 @@
 </head>
 
 <body>
-    <h2 style="text-align: center; color: rgb(255, 153, 0);">Bai post</h2>
+    <h2 style="text-align: center; color: rgb(255, 153, 0);">Danh sách bài đăng</h2>
     <div class="container">
         <div class="row">
             <div class="col">
                 <table border="1" class="table table-bordered border-black w-100">
                     <thead>
                         <tr>
-                            <th scope="col" style="width: 10%;">ID</th>
-                            <th scope="col" style="width: 10%;">id_User</th>
+                            <th scope="col">ID</th>
+                            <th scope="col">ID Người tạo</th>
                             <th scope="col" style="width: 10%;">Title</th>
                             <th scope="col" style="width: 10%;">Content</th>
                             <th scope="col" style="width: 10%;">Status</th>
@@ -25,38 +25,39 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>
-                                <%= row._id %>
-                            </td>
-                            <td>
-                                <%= row.id_User %>
-                            </td>
-                            <td>
-                                <%= row.title %>
-                            </td>
-                            <td>
-                                <%= row.content %>
-                            </td>
-                            <td>
-                                <%= row.status %>
-                            </td>
-                            <td class="text-center">
-                                <div class="btn-group" role="group">
+                        <% listSP.forEach((row)=> { %>
+                            <tr>
+                                <td>
+                                    <%= row._id %>
+                                </td>
+                                <td>
+                                    <%= row.id_User %>
+                                </td>
+                                <td>
+                                    <%= row.title %>
+                                </td>
+                                <td>
+                                    <%= row.content %>
+                                </td>
+                                <td>
+                                    <%= row.status %>
+                                </td>
+                                <td class="text-center">
+                                    <div class="btn-group" role="group">
+                                        <a href="/api/login/post/update/<%= row._id %>">
+                                            <button type="submit" class="btn btn-warning w-100 m-10"
+                                                style="margin-right: 10px;">Sửa</button>
+                                        </a>
 
-                                    <a href="/api/login/post/update/<%= row._id %>">
-                                        <button type="submit" class="btn btn-warning w-100 m-10"
-                                            style="margin-right: 10px;">Sửa</button>
-                                    </a>
-
-                                    <a href="/api/login/post/delete/<%= row._id %>"
-                                        onclick="return confirm('Bạn có chắc muốn xóa sản phẩm này?')">
-                                        <button type="submit" class="btn btn-danger w-100"
-                                            style="margin-left: 10px;">Xóa</button>
-                                    </a>
-                                </div>
-                            </td>
-                        </tr>
+                                        <a href="/api/login/post/delete/<%= row._id %>"
+                                            onclick="return confirm('Bạn có chắc muốn xóa sản phẩm này?')">
+                                            <button type="submit" class="btn btn-danger w-100"
+                                                style="margin-left: 10px;">Xóa</button>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <% }) %>
                     </tbody>
                 </table>
             </div>
@@ -65,7 +66,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', async () => {
             const token = localStorage.getItem('hoan');
-            const response = await fetch('/api/login/post/list', {
+            const response = await fetch('api/login/post/list', {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -77,11 +78,11 @@
                 window.location.href = "/api/login"; // Chuyển hướng đến trang đăng nhập
             } else {
                 const data = await response.json();
-                const productList = document.getElementById('listPost');
+                const listPost = document.getElementById('Post-list');
                 data.products.forEach(product => {
-                    const productItem = document.createElement('div');
-                    productItem.innerText = product.name;
-                    productList.appendChild(productItem);
+                    const postItem = document.createElement('div');
+                    postItem.innerText = product.name;
+                    listPost.appendChild(postItem);
                 });
             }
         });

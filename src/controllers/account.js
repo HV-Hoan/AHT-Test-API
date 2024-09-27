@@ -1,7 +1,5 @@
-const { json } = require("express");
 const jwt = require('jsonwebtoken');
 const Account = require("../models/account");
-const bcryptjs = require('bcryptjs');
 const TOKEN = process.env.TOKEN;
 
 
@@ -13,7 +11,7 @@ exports.ScreenLogin = (req, res) => {
 exports.dangnhap = async (req, res, next) => {
     try {
         const { username, password, role } = req.body
-        const user = await Account.findOne({ username })
+        const user = await Account.findOne({ username, password })
         if (!user) {
             return res.status(400).json({
                 message: "Username hoặc Password không đúng"
@@ -23,7 +21,7 @@ exports.dangnhap = async (req, res, next) => {
         //const token = jwt.sign({ _id: user._id, role: user.role }, TOKEN, { expiresIn: '1h' });
         // console.log("Token: " + token);
         //ẩn password 
-        user.password = undefined
+        // user.password = undefined
         if (!user) {
             return res.status(400).json({
                 message: "Đăng nhập không thành công"
