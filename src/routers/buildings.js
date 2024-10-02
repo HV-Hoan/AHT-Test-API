@@ -7,9 +7,13 @@ var wrapError = require("../middlewares/wrapError");
 
 
 //Building
-routerBuilding.get('/building/list', verifyRole(['admin']), wrapError(ctrlBuidlings.listBuilding));
-routerBuilding.post('/building/add', verifyRole(['admin', 'landlord']), wrapError(ctrlBuidlings.themBuilding));
-routerBuilding.put('/building/update/:id', verifyRole(['admin', 'landlord']), wrapError(ctrlBuidlings.updateBuilding));
+routerBuilding.get('/building/list', verifyRole(['landlord']), wrapError(ctrlBuidlings.listBuilding));
+
+routerBuilding.get('/building/add', verifyRole(['landlord']), wrapError(ctrlBuidlings.themBuilding));
+routerBuilding.post('/building/add', verifyRole(['landlord']), wrapError(ctrlBuidlings.themBuilding));
+
+routerBuilding.get('/building/update/:id', verifyRole(['landlord']), wrapError(ctrlBuidlings.updateBuilding));
+routerBuilding.put('/building/update/:id', verifyRole(['landlord']), wrapError(ctrlBuidlings.updateBuilding));
 
 
 module.exports = routerBuilding;

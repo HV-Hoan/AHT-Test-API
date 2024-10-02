@@ -13,7 +13,7 @@ routerPost.get('/post/add', verifyRole(['admin', 'landlord', 'user']), wrapError
 routerPost.post('/post/add', verifyRole(['admin', 'landlord', 'user']), wrapError(ctrlPost.addPost));
 
 routerPost.get('/post/update/:id', wrapError(ctrlPost.update));
-routerPost.put('/post/update/:id', wrapError(ctrlPost.update));
+routerPost.post('/post/update/:id', wrapError(ctrlPost.update));
 
 routerPost.get('/post/delete/:id', wrapError(ctrlPost.delete));
 routerPost.delete('/post/delete/:id', wrapError(ctrlPost.delete));

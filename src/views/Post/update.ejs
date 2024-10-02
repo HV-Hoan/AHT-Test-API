@@ -1,54 +1,80 @@
-<!DOCTYPE html>
-<html lang="en">
+<form action="/api/login/post/update/<%= post._id %>" method="POST">
+    <table>
+        <tr>
+            <th><label for="title">Title</label></th>
+            <td><input type="text" id="title" name="title" value="<%= post.title %>" required /></td>
+        </tr>
+        <tr>
+            <th><label for="content">Content</label></th>
+            <td><textarea id="content" name="content" required><%= post.content %></textarea></td>
+        </tr>
+        <tr>
+            <th><label for="status">Status</label></th>
+            <td><input type="text" id="status" name="status" value="<%= post.status %>" required /></td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <button type="submit" class="btn">Update Post</button>
+                <a href="/api/login/post/list" class="btn">Back to List</a>
+            </td>
+        </tr>
+    </table>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
-</head>
 
-<body>
+</form>
+<style>
+    table {
+        width: 50%;
+        /* Chiếm 100% chiều rộng của container */
+        border-collapse: collapse;
+        /* Gộp các viền của bảng */
+    }
 
-    <div class="text-center">
-        <h1 style=" color: rgb(255, 153, 0);">Sửa sản phẩm</h1>
-        <form action="" method="post" class="form-control w-75 m-lg-auto bg-secondary">
+    td {
+        padding: 10px;
+        /* Khoảng cách bên trong ô */
+
+        text-align: left;
+        /* Căn trái nội dung */
+    }
+
+    th {
+        background-color: #f2f2f2;
+        /* Màu nền cho tiêu đề */
+    }
+
+    input[type="text"],
+    textarea {
+        font-size: 18px;
+        /* Kích thước chữ lớn hơn */
+        padding: 10px;
+        /* Khoảng cách bên trong ô */
+        width: 100%;
+        /* Chiếm 100% chiều rộng */
+        border-radius: 5px;
+        /* Bo góc */
+        border: 1px solid #ccc;
+        /* Viền cho ô */
+        box-sizing: border-box;
+        /* Đảm bảo padding và border không làm tăng chiều rộng */
+    }
+
+    textarea {
+        height: 100px;
+        /* Chiều cao cho textarea */
+    }
 
 
-            <% if(objDT !=null && obj!=null){%>
-
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="input-group flex-nowrap mb-1">
-                            <span class="input-group-text" id="addon-wrapping">Title</span>
-                            <input type="text" class="form-control" placeholder="Tên sản phẩm" aria-label="NameProduct"
-                                aria-describedby="addon-wrapping" name="NameProduct" value="<%= obj.title %>">
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="input-group flex-nowrap mb-1">
-                            <span class="input-group-text" id="addon-wrapping">Content</span>
-                            <input type="number" class="form-control" placeholder="Giá tiền" aria-label="Price"
-                                aria-describedby="addon-wrapping" name="Price" value="<%= obj.content %>">
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="input-group flex-nowrap mb-1">
-                            <span class="input-group-text" id="addon-wrapping">Status</span>
-                            <input type="text" class="form-control" placeholder="Username" aria-label="Username"
-                                aria-describedby="addon-wrapping" name="Size" value="<%= objDT.status %>">
-                        </div>
-                    </div>
-
-                    <p>
-                        <%= smg %>
-                    </p>
-
-                    <button type="submit" class="btn btn-primary text-center">Update </button>
-                    <% } %>
-                </div>
-    </div>
-</body>
-
-</html>
+    .btn {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #2ba8ca;
+        color: #ffffff;
+        border: none;
+        border-radius: 5px;
+        text-decoration: none;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+</style>

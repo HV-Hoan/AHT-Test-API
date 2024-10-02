@@ -1,8 +1,5 @@
 const Post = require("../models/posts");
 
-
-
-
 exports.list = async (req, res) => {
     try {
         const posts = await Post.find();
@@ -41,37 +38,31 @@ exports.addPost = async (req, res, next) => {
     }
 }
 exports.update = async (req, res, next) => {
-    let objDT = null;
-    let obj = null;
     try {
         const findID = req.params.id;
         const { title, content, status } = req.body;
-        if (!title) {
-            let msg = "Bài đăng phải có tiêu đề!";
-            console.log(msg);
-            return res.status(400).send(msg);
-        }
+
         const update = await Post.findByIdAndUpdate(
             findID,
-            { title, content, status, updated_at: new Date().toISOString() },
+            {
+                title,
+                content,
+                status,
+                updated_at: new Date().toISOString()
+            },
             { new: true, runValidators: true }
         );
+
         if (!update) {
             return res.status(404).json({ message: 'Không tìm thấy bài đăng' });
         }
-        res.render('Post/update', { listSO: update });
-        if (obj == null) {
-            smg = "Sản phẩm không tồn tại"
-            //return res.status(400).json({  smg: smg });
-        }
-
-        return res.status(200).json({ message: 'Cập nhật thành công bài đăng', product: update });
+        return res.render('Post/update', { post: update });
     } catch (error) {
-
         console.error('Log error:', error);
         return res.status(500).json({ message: 'Internal server error' });
     }
 }
+
 exports.delete = async (req, res, next) => {
     try {
         const findID = req.params.id;

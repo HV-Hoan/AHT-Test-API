@@ -1,5 +1,5 @@
 const express = require('express');
-const routers = require('./routers/authRouter');
+const routers = require('./routers/1.authRouter');
 const errCheck = require('./middlewares/errorHandler');
 const app = express();
 const path = require('path');
@@ -20,7 +20,9 @@ mongoose.connect(linkOnline)
         console.error('Lỗi khi kết nối MongoDB:', err);
     });
 
-app.use(express.json()); // Middleware cho việc xử lý JSON
+// Cấu hình middleware để xử lý dữ liệu form
+app.use(express.urlencoded({ extended: true })); // Cho phép xử lý dữ liệu từ form (POST)
+app.use(express.json()); // Cho phép xử lý dữ liệu JSON
 
 
 app.set('view engine', 'ejs');// Cấu hình view engine là EJS

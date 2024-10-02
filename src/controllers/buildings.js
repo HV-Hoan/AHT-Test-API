@@ -1,5 +1,4 @@
 const Building = require("../models/buildings");
-const products = require("../models/products");
 
 exports.listBuilding = async (req, res, next) => {
     try {
@@ -13,16 +12,24 @@ exports.themBuilding = async (req, res, next) => {
     try {
         if (req.method === 'POST') {
             let { address, description, number_of_floors } = req.body;
+
+            const userId = req.user._id; // log de xem id 
+
             let objBuldings = new Building({
+                id_Landlord: req.user._id,
                 address,
                 description,
                 number_of_floors,
                 created_at: new Date().toISOString(),
                 updated_at: new Date().toISOString()
             });
+
             await objBuldings.save();
-            let msg = 'Thêm thành công building mới với id: ' + objBuldings._id;
-            return res.json(msg)
+
+            // Đếm tổng số tòa nhà mà user đã tạo
+            const buildingCount = await Building.countDocuments({ id_Landlord: userId });
+
+            res.json({ message: 'Sản phẩm đã được tạo thành công', totalBuildings: buildingCount });
         }
     } catch (error) {
         console.error('Log error:', error);

@@ -1,10 +1,10 @@
 var express = require('express');
 var router = express.Router();
 
-var routerAccount = require("../routers/accounts");
-var routerRoom = require("../routers/rooms");
-var routerPost = require("../routers/posts");
-var routerBuilding = require("../routers/buildings");
+var routerAccount = require("./accounts");
+var routerRoom = require("./rooms");
+var routerPost = require("./posts");
+var routerBuilding = require("./buildings");
 
 // ///product
 // router.get("/danhsach", wrapError(ctrlProducts.XemDanhSachSanPham));
