@@ -16,11 +16,11 @@
             </div>
             <div class="mb-3">
                 <label class="form-label">username address</label>
-                <input type="username" class="form-control" id="username" placeholder="Username">
+                <input type="text" class="form-control" id="username" placeholder="Username">
             </div>
             <div class="mb-3 d-grid ">
                 <label class="form-label">Password</label>
-                <input type="password" class="form-control" id="password">
+                <input type="text" class="form-control" id="password">
             </div>
             <div class="mb-3 d-flex justify-content-center">
                 <button class="btn btn-warning osition-relative " id="btnDangNhap" style="color: white;">Đăng
@@ -36,20 +36,17 @@
         async function login() {
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
-            const response = await fetch('/api/login', {
+            const response = await fetch('http://localhost:3030/api/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({
-                    username: username,
-                    password: password
-                })
+                body: JSON.stringify({ username, password })
             });
 
             if (response.ok) {
                 const data = await response.json();
-                console.log("Phản hồi từ API:", data);  // Kiểm tra toàn bộ dữ liệu trả về từ API
+                console.log("Phản hồi từ API phần view Login:", data);  // Kiểm tra toàn bộ dữ liệu trả về từ API
 
                 if (data.datas.accessToken) {
                     localStorage.setItem('hoan', data.datas.accessToken);  // Lưu token nếu có

@@ -14,17 +14,23 @@ exports.list = async (req, res) => {
 exports.addPost = async (req, res, next) => {
     try {
         // Kiểm tra xem req.user có tồn tại và có thuộc tính id không
-        console.log(req.user);
         if (!req.user || !req.user._id) {
             return res.status(401).json({ message: 'User not authenticated' });
         }
+
         if (req.method === "POST") {
-            let { title, content, status } = req.body;
+            let { title, content, status, imageUrl } = req.body;
+            console.log("Link ảnh online:", imageUrl);
+            if (!imageUrl) {
+                return res.status(400).json({ message: 'Link ảnh không được trống' });
+            }
+
             let objPosts = new Post({
                 id_User: req.user._id,
                 title: title,
                 content: content,
                 status: status,
+                imageUrl: imageUrl,
                 created_at: new Date().toISOString(),
                 updated_at: new Date().toISOString()
             });
@@ -40,11 +46,12 @@ exports.addPost = async (req, res, next) => {
 exports.update = async (req, res, next) => {
     try {
         const findID = req.params.id;
-        const { title, content, status } = req.body;
+        const { imageUrl, title, content, status } = req.body;
 
         const update = await Post.findByIdAndUpdate(
             findID,
             {
+                imageUrl,
                 title,
                 content,
                 status,
@@ -53,9 +60,6 @@ exports.update = async (req, res, next) => {
             { new: true, runValidators: true }
         );
 
-        if (!update) {
-            return res.status(404).json({ message: 'Không tìm thấy bài đăng' });
-        }
         return res.render('Post/update', { post: update });
     } catch (error) {
         console.error('Log error:', error);

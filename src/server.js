@@ -23,7 +23,7 @@ mongoose.connect(linkOnline)
 // Cấu hình middleware để xử lý dữ liệu form
 app.use(express.urlencoded({ extended: true })); // Cho phép xử lý dữ liệu từ form (POST)
 app.use(express.json()); // Cho phép xử lý dữ liệu JSON
-
+// app.use('/uploads', express.static('uploads'));
 
 app.set('view engine', 'ejs');// Cấu hình view engine là EJS
 app.set('views', path.join(__dirname, '/views'));// Đảm bảo Express biết tìm các file view trong thư mục 'views'

@@ -1,10 +1,10 @@
 const jwt = require('jsonwebtoken');
 const Account = require("../models/account");
-const TOKEN = process.env.TOKEN;
+
 
 const verifyRole = allowedRoles => async (req, res, next) => {
     try {
-        const token = req.headers.authorization?.split(' ')[1]
+        const token = req.headers.authorization?.split(' ')[1];
         if (!token) {
             return res.status(400).json({
                 message: "Bạn chưa đăng nhập"
@@ -12,8 +12,8 @@ const verifyRole = allowedRoles => async (req, res, next) => {
         }
         // Giải mã token
         const decoded = jwt.verify(token, 'hoan');
-        //const decoded = jwt.verify(token, TOKEN);
         req.user = decoded;  // Gán thông tin user vào request
+
         const user = await Account.findById(decoded._id);
 
         if (!user) {
@@ -27,6 +27,7 @@ const verifyRole = allowedRoles => async (req, res, next) => {
                 message: "Bạn không có quyền"
             });
         }
+
         next();
     } catch (error) {
         console.error("Lỗi:", error);

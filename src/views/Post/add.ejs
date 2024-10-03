@@ -1,0 +1,28 @@
+<form action="/api/login/post/add" method="POST"></form>
+<table>
+    <tr>
+        <th><label for="title">Title</label></th>
+        <td><input type="text" id="title" name="title" value="<%= post.title %>" required /></td>
+    </tr>
+    <tr>
+        <th><label for="content">Content</label></th>
+        <td><textarea id="content" name="content" required><%= post.content %></textarea></td>
+    </tr>
+    <tr>
+        <th><label for="status">Status</label></th>
+        <td><input type="text" id="status" name="status" value="<%= post.status %>" required /></td>
+    </tr>
+    <tr>
+        <th><label for="status">Image</label></th>
+        <td><input type="text" id="status" name="status" value="<%= post.imageUrl %>" required /></td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <button type="submit" class="btn">Add</button>
+            <a href="/api/login/post/list" class="btn">Back to List</a>
+        </td>
+    </tr>
+</table>
+
+
+</form>

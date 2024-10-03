@@ -1,6 +1,10 @@
 <form action="/api/login/post/update/<%= post._id %>" method="POST">
     <table>
         <tr>
+            <th><label for="imageUrl">Image</label></th>
+            <td><textarea id="imageUrl" name="imageUrl" required><%= post.imageUrl %></textarea></td>
+        </tr>
+        <tr>
             <th><label for="title">Title</label></th>
             <td><input type="text" id="title" name="title" value="<%= post.title %>" required /></td>
         </tr>

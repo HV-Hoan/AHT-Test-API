@@ -9,8 +9,9 @@ var wrapError = require("../middlewares/wrapError");
 //Post
 routerPost.get('/post/list', wrapError(ctrlPost.list));
 
-routerPost.get('/post/add', verifyRole(['admin', 'landlord', 'user']), wrapError(ctrlPost.addPost));
-routerPost.post('/post/add', verifyRole(['admin', 'landlord', 'user']), wrapError(ctrlPost.addPost));
+
+routerPost.get('/post/add', verifyRole(['landlord', 'admin']), wrapError(ctrlPost.addPost));
+routerPost.post('/post/add', verifyRole(['landlord', 'admin']), wrapError(ctrlPost.addPost));
 
 routerPost.get('/post/update/:id', wrapError(ctrlPost.update));
 routerPost.post('/post/update/:id', wrapError(ctrlPost.update));

@@ -16,17 +16,23 @@
                 <table border="1" class="table table-bordered border-black w-100">
                     <thead>
                         <tr>
-                            <th scope="col">ID</th>
-                            <th scope="col">ID Người tạo</th>
+                            <th scope="col" style="width: 10%;">Image</th>
+                            <th scope="col" style="width: 10%;">ID</th>
+                            <th scope="col" style="width: 10%;">ID Người tạo</th>
                             <th scope="col" style="width: 10%;">Title</th>
                             <th scope="col" style="width: 10%;">Content</th>
                             <th scope="col" style="width: 10%;">Status</th>
                             <th scope="col" style="width: 10%;">Action</th>
                         </tr>
                     </thead>
+                    <a href="/api/login/post/add">
+                        <button type="submit" class="btn btn-danger w-20" style="margin-left: 10px;">Thêm bài
+                            đăng</button>
+                    </a>
                     <tbody>
                         <% listSP.forEach((row)=> { %>
                             <tr>
+                                <td class="text-center"><img src="<%= row.imageUrl %>" width="100%" /></td>
                                 <td>
                                     <%= row._id %>
                                 </td>

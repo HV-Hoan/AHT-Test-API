@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 const Account = require("../models/account");
 const TOKEN = process.env.TOKEN;
 
@@ -10,23 +11,19 @@ exports.ScreenLogin = (req, res) => {
 
 exports.dangnhap = async (req, res, next) => {
     try {
-        const { username, password, role } = req.body
-        const user = await Account.findOne({ username, password })
+        const { username, password } = req.body;
+
+        const user = await Account.findOne({ username });
+
         if (!user) {
             return res.status(400).json({
                 message: "Username hoặc Password không đúng"
             })
         }
+
+
         const token = jwt.sign({ _id: user._id, role: user.role }, 'hoan', { expiresIn: '1h' });
-        //const token = jwt.sign({ _id: user._id, role: user.role }, TOKEN, { expiresIn: '1h' });
-        // console.log("Token: " + token);
-        //ẩn password 
-        // user.password = undefined
-        if (!user) {
-            return res.status(400).json({
-                message: "Đăng nhập không thành công"
-            })
-        }
+
         return res.status(200).json({
             message: "Đăng nhập thành công",
             datas: { ...user.toObject(), accessToken: token }
