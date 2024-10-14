@@ -6,7 +6,7 @@ const postChema = new mongoose.Schema({
     title: { type: String, require: true },
     content: { type: String, require: true },
     status: { type: String, require: true },
-    imageUrl: { type: String, require: true },
+    image: { type: String, require: true },
     created_at: { type: String, require: false },
     updated_at: { type: String, require: false },
 });

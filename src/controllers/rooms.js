@@ -24,7 +24,9 @@ exports.read = async (req, res, next) => {
         return res.status(500).json({ message: 'Internal server error' });
     }
 }
+
 exports.themRoom = async (req, res, next) => {
+
     try {
         // Kiểm tra xem req.user có tồn tại và có thuộc tính id không
         if (!req.user || !req.user._id) {
@@ -72,6 +74,7 @@ exports.themRoom = async (req, res, next) => {
         return res.status(500).json({ message: 'Internal server error' });
     }
 };
+
 exports.updateRoom = async (req, res, next) => {
     try {
         const idRoom = req.params.id;
@@ -125,3 +128,4 @@ exports.delete = async (req, res, next) => {
         return json({ message: "Xoa that bai" })
     }
 }
+

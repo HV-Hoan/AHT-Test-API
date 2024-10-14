@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const Account = require("../models/account");
+const { MongoCompatibilityError } = require('mongodb');
 const TOKEN = process.env.TOKEN;
 
 
@@ -12,18 +13,13 @@ exports.ScreenLogin = (req, res) => {
 exports.dangnhap = async (req, res, next) => {
     try {
         const { username, password } = req.body;
-
-        const user = await Account.findOne({ username });
-
+        const user = await Account.findOne({ username, password });
         if (!user) {
             return res.status(400).json({
                 message: "Username hoặc Password không đúng"
             })
         }
-
-
         const token = jwt.sign({ _id: user._id, role: user.role }, 'hoan', { expiresIn: '1h' });
-
         return res.status(200).json({
             message: "Đăng nhập thành công",
             datas: { ...user.toObject(), accessToken: token }
@@ -33,6 +29,8 @@ exports.dangnhap = async (req, res, next) => {
         return res.status(400).send({ error: 'Lỗi trong quá trình đăng nhập', details: error.message });
     }
 }
+
+
 exports.danhsachAcc = async (req, res, next) => {
     try {
         const account = await Account.find();
@@ -41,6 +39,7 @@ exports.danhsachAcc = async (req, res, next) => {
         return res.status(500).json({ message: 'Lỗi khi lấy danh sách account' });
     }
 };
+
 exports.xemCT = async (req, res, next) => {
     try {
         const findID = req.params.id;
@@ -108,6 +107,7 @@ exports.addAcc = async (req, res, next) => {
         return res.status(500).send('Lỗi server rồi');
     }
 };
+
 exports.xoa = async (req, res, next) => {
     try {
         const findID = req.params.id;
@@ -115,20 +115,18 @@ exports.xoa = async (req, res, next) => {
         if (!xoaAcc) {
             return res.status(404).json({ message: " Không có đối tượng" });
         };
-
         let msg = 'Xóa tài khoản có ID: ' + findID;
         console.log(msg);
-
     } catch (error) {
         smg = "Lỗi: " + error.message;
         return res.status(500).json({ message: smg });
     }
 };
+
 exports.update = async (req, res, next) => {
     try {
         const findID = req.params.id;
         const { username, password, email, phoneNumber } = req.body;
-
         if (!validateEmail(email)) {
             let msg = "Email không đúng định dạng!";
             console.log(msg);

@@ -1,8 +1,11 @@
-<form action="/api/login/post/update/<%= post._id %>" method="POST">
+<form action="/api/post/update/<%= post._id %>" method="POST" enctype="multipart/form-data">
     <table>
         <tr>
-            <th><label for="imageUrl">Image</label></th>
-            <td><textarea id="imageUrl" name="imageUrl" required><%= post.imageUrl %></textarea></td>
+            <th><label for="image">Image</label></th>
+            <td>
+                <input type="file" id="image" name="image" accept="image/*" />
+                <%= post.image %>
+            </td>
         </tr>
         <tr>
             <th><label for="title">Title</label></th>
@@ -19,12 +22,10 @@
         <tr>
             <td colspan="2">
                 <button type="submit" class="btn">Update Post</button>
-                <a href="/api/login/post/list" class="btn">Back to List</a>
+                <a href="/api/post/list" class="btn">Back to List</a>
             </td>
         </tr>
     </table>
-
-
 </form>
 <style>
     table {

@@ -1,23 +1,38 @@
-var express = require('express');
-var routerPost = express.Router();
-var ctrlPost = require("../controllers/posts");
+const express = require('express');
+const multer = require('multer');
+const routerPost = express.Router();
+const ctrlPost = require("../controllers/posts");
+//const upload = new multer({ dest: './src/pubic/images' });
 
-var verifyRole = require("../middlewares/checkRole");
-var wrapError = require("../middlewares/wrapError");
-
-
-//Post
-routerPost.get('/post/list', wrapError(ctrlPost.list));
+const verifyRole = require("../middlewares/checkRole");
+const wrap = require('../utils/wrapError');
 
 
-routerPost.get('/post/add', verifyRole(['landlord', 'admin']), wrapError(ctrlPost.addPost));
-routerPost.post('/post/add', verifyRole(['landlord', 'admin']), wrapError(ctrlPost.addPost));
+var storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, "src/publics/public");
+    },
+    filename: function (req, file, cb) {
+        cb(null, Date.now() + "-" + file.originalname);
+    },
+});
 
-routerPost.get('/post/update/:id', wrapError(ctrlPost.update));
-routerPost.post('/post/update/:id', wrapError(ctrlPost.update));
 
-routerPost.get('/post/delete/:id', wrapError(ctrlPost.delete));
-routerPost.delete('/post/delete/:id', wrapError(ctrlPost.delete));
+var upload = multer({ storage: storage });
+
+
+
+routerPost.get('/list', verifyRole(['landlord', 'admin']), wrap(ctrlPost.list));
+
+
+routerPost.get('/add', verifyRole(['landlord', 'admin']), wrap(ctrlPost.addPost));
+routerPost.post('/add', verifyRole(['landlord', 'admin']), upload.single('image'), wrap(ctrlPost.addPost));
+
+routerPost.get('/update/:id', verifyRole(['landlord', 'admin']), wrap(ctrlPost.update1));
+routerPost.post('/update/:id', verifyRole(['landlord', 'admin']), upload.single('image'), wrap(ctrlPost.update));
+
+routerPost.get('/delete/:id', verifyRole(['landlord', 'admin']), wrap(ctrlPost.delete));
+routerPost.delete('/delete/:id', verifyRole(['landlord', 'admin']), wrap(ctrlPost.delete));
 
 
 module.exports = routerPost;

@@ -3,7 +3,7 @@ var routerRoom = express.Router();
 var ctrlRooms = require("../controllers/rooms");
 
 var verifyRole = require("../middlewares/checkRole");
-var wrapError = require("../middlewares/wrapError");
+var wrapError = require("../utils/wrapError");
 
 
 //Room

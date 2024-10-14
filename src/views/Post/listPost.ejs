@@ -9,6 +9,26 @@
 </head>
 
 <body>
+
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/api/post/list">Post</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
+                aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav">
+                    <a class="nav-link active" aria-current="page" href="#">Home</a>
+                    <a class="nav-link" href="#">Features</a>
+                    <a class="nav-link" href="/api/acc">Login</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+
+
     <h2 style="text-align: center; color: rgb(255, 153, 0);">Danh sách bài đăng</h2>
     <div class="container">
         <div class="row">
@@ -25,37 +45,38 @@
                             <th scope="col" style="width: 10%;">Action</th>
                         </tr>
                     </thead>
-                    <a href="/api/login/post/add">
+                    <a href="/api/post/add">
                         <button type="submit" class="btn btn-danger w-20" style="margin-left: 10px;">Thêm bài
                             đăng</button>
                     </a>
                     <tbody>
-                        <% listSP.forEach((row)=> { %>
+                        <% post.forEach((posts)=> { %>
                             <tr>
-                                <td class="text-center"><img src="<%= row.imageUrl %>" width="100%" /></td>
-                                <td>
-                                    <%= row._id %>
+                                <td class="text-center"><img src="/public/<%= posts.image %>" width="100%" />
                                 </td>
                                 <td>
-                                    <%= row.id_User %>
+                                    <%= posts._id %>
                                 </td>
                                 <td>
-                                    <%= row.title %>
+                                    <%= posts.id_User %>
                                 </td>
                                 <td>
-                                    <%= row.content %>
+                                    <%= posts.title %>
                                 </td>
                                 <td>
-                                    <%= row.status %>
+                                    <%= posts.content %>
+                                </td>
+                                <td>
+                                    <%= posts.status %>
                                 </td>
                                 <td class="text-center">
                                     <div class="btn-group" role="group">
-                                        <a href="/api/login/post/update/<%= row._id %>">
+                                        <a href="/api/post/update/<%= posts._id %>">
                                             <button type="submit" class="btn btn-warning w-100 m-10"
                                                 style="margin-right: 10px;">Sửa</button>
                                         </a>
 
-                                        <a href="/api/login/post/delete/<%= row._id %>"
+                                        <a href="/api/post/delete/<%= posts._id %>"
                                             onclick="return confirm('Bạn có chắc muốn xóa sản phẩm này?')">
                                             <button type="submit" class="btn btn-danger w-100"
                                                 style="margin-left: 10px;">Xóa</button>
@@ -72,7 +93,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', async () => {
             const token = localStorage.getItem('hoan');
-            const response = await fetch('api/login/post/list', {
+            const response = await fetch('api/post/list', {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -81,10 +102,10 @@
 
             if (response.status === 401 || response.status === 403) {
                 alert('Invalid or expired token, please log in again.');
-                window.location.href = "/api/login"; // Chuyển hướng đến trang đăng nhập
+                window.location.href = "/api/acc"; // Chuyển hướng đến trang đăng nhập
             } else {
                 const data = await response.json();
-                const listPost = document.getElementById('Post-list');
+                const listPost = document.getElementById('listPost');
                 data.products.forEach(product => {
                     const postItem = document.createElement('div');
                     postItem.innerText = product.name;

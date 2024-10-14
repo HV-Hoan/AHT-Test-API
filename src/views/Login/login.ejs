@@ -15,7 +15,7 @@
                 <h2 style="color: rgb(255, 157, 0);">Đăng nhập</h2>
             </div>
             <div class="mb-3">
-                <label class="form-label">username address</label>
+                <label class="form-label">username</label>
                 <input type="text" class="form-control" id="username" placeholder="Username">
             </div>
             <div class="mb-3 d-grid ">
@@ -28,65 +28,54 @@
             </div>
         </div>
     </div>
+
     <script>
+        document.getElementById("btnDangNhap").addEventListener("click", function () {
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
 
-        const btnDangNhap = document.querySelector("#btnDangNhap")
+            console.log("Username:", username);
+            console.log("Password:", password);
 
-        btnDangNhap.addEventListener("click", login)
-        async function login() {
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            const response = await fetch('http://localhost:3030/api/login', {
+            // Gửi yêu cầu đăng nhập đến máy chủ
+            fetch('http://localhost:3030/api/acc', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({ username, password })
-            });
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log("Login Response Data:", data);
+                    if (data.datas.accessToken) {
+                        localStorage.setItem('token', data.datas.accessToken);
+                        console.log("Token lưu trữ:", data.datas.accessToken);
 
-            if (response.ok) {
-                const data = await response.json();
-                console.log("Phản hồi từ API phần view Login:", data);  // Kiểm tra toàn bộ dữ liệu trả về từ API
+                        fetch('http://localhost:3030/api/acc/verify', {
+                            method: 'POST',
+                            headers: {
+                                'Authorization': `Bearer ${localStorage.getItem('token')}`,  // Đảm bảo 'Bearer' có trước toke
+                                'Content-Type': 'application/json'
+                            }
+                        })
+                            .then(response => response.json())
+                            .then(verifyData => {
+                                console.log("Verification Response Data:", verifyData);
+                                if (verifyData.success) {
 
-                if (data.datas.accessToken) {
-                    localStorage.setItem('hoan', data.datas.accessToken);  // Lưu token nếu có
-                    alert('Đăng nhập thành công');
-                    //next
-                    fetchData("/api/login/post/list");
-                } else {
-                    console.error("Không có token trong phản hồi:", data);
-                    alert('Không tìm thấy token trong phản hồi');
-                }
-            } else {
-                alert('Đăng nhập thất bại !!! Hãy kiểm tra lại.');
-            }
-        }
-
-        async function fetchData(link) {
-            const token = localStorage.getItem('hoan');
-            if (!token) {
-                alert('Không tìm thấy token, hãy kiểm tra lại');
-                return;
-            };
-
-            if (!link) {
-                console.error('Link chưa được xác định!');
-                return;
-            }
-
-            const response = await fetch(`${link}`, {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            });
-
-            if (response.ok) {
-                const htmlContent = await response.text();
-                document.querySelector("body").innerHTML = htmlContent;
-            } else {
-                alert('Bạn không có quyền truy cập vào đây');
-            }
-        }
+                                    window.location.href = 'http://localhost:3030/api/post/list';
+                                } else {
+                                    alert(verifyData.message || "Bạn không có quyền");
+                                }
+                            })
+                            .catch(error => console.error('Lỗi xác minh:', error));
+                    } else {
+                        alert("Đăng nhập thất bại");
+                    }
+                })
+                .catch(error => console.error('Lỗi đăng nhập:', error));
+        });
     </script>
 </body>
 
