@@ -11,17 +11,13 @@ exports.list = async (req, res) => {
     }
 };
 
-
 exports.addPost = async (req, res, next) => {
     try {
-        // Kiểm tra xem req.user có tồn tại và có thuộc tính id không
         if (!req.user || !req.user._id) {
             return res.status(401).json({ message: 'User not authenticated' });
         }
-
         if (req.method === "POST") {
             let { title, content, status, image } = req.body;
-            console.log("Link ảnh online:", image);
             if (!image) {
                 return res.status(400).json({ message: 'Link ảnh không được trống' });
             }
@@ -44,8 +40,6 @@ exports.addPost = async (req, res, next) => {
     }
 }
 
-
-
 exports.update1 = async (req, res, next) => {
     try {
         const post = await Post.findById(req.params.id);
@@ -55,15 +49,13 @@ exports.update1 = async (req, res, next) => {
         res.status(500).send("Lỗi server");
     }
 };
+
 exports.update = async (req, res, next) => {
     try {
         const findID = req.params.id;
-
-        const image = req.file ? req.file.filename : undefined; // Lấy đường dẫn của ảnh, nếu có
-
+        const image = req.file ? req.file.filename : undefined;
         const { title, content, status } = req.body;
         const update = await Post.findByIdAndUpdate(
-            // mongoose.Types.ObjectId(findID),
             findID,
             {
                 image,

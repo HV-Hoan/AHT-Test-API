@@ -15,10 +15,10 @@ routerAccount.post('/verify', verifyRole(['landlord', 'admin']), (req, res) => {
 
 
 routerAccount.get('/', wrapError(ctrlAccounts.ScreenLogin));
-routerAccount.post('/', verifyRole(['admin']), wrapError(ctrlAccounts.dangnhap));
+routerAccount.post('/', wrapError(ctrlAccounts.dangnhap));
 
 
-routerAccount.get('/list', verifyRole(['admin']), wrapError(ctrlAccounts.danhsachAcc));
+routerAccount.get('/list', wrapError(ctrlAccounts.danhsachAcc));
 routerAccount.get('/read/:id', wrapError(ctrlAccounts.xemCT));
 routerAccount.post('/add', wrapError(ctrlAccounts.addAcc));
 routerAccount.delete('/delete/:id', verifyRole(['admin']), wrapError(ctrlAccounts.xoa));

@@ -1,7 +1,6 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const Account = require("../models/account");
-const { MongoCompatibilityError } = require('mongodb');
 const TOKEN = process.env.TOKEN;
 
 
@@ -14,15 +13,18 @@ exports.dangnhap = async (req, res, next) => {
     try {
         const { username, password } = req.body;
         const user = await Account.findOne({ username, password });
-        if (!user) {
+
+        if (!user || user.role !== 'admin') {
             return res.status(400).json({
-                message: "Username hoặc Password không đúng"
-            })
+                message: "Username hoặc Password không đúng hoặc không có quyền truy cập"
+            });
         }
+
         const token = jwt.sign({ _id: user._id, role: user.role }, 'hoan', { expiresIn: '1h' });
+
         return res.status(200).json({
             message: "Đăng nhập thành công",
-            datas: { ...user.toObject(), accessToken: token }
+            datas: { ...user.toObject(), token: token }
         })
     } catch (error) {
         console.error(error, " Password: " + req.body.password);
@@ -30,11 +32,10 @@ exports.dangnhap = async (req, res, next) => {
     }
 }
 
-
 exports.danhsachAcc = async (req, res, next) => {
     try {
-        const account = await Account.find();
-        return res.status(200).json(account);
+        const accounts = await Account.find();
+        res.render('Account/listAccount', { account: accounts });
     } catch (err) {
         return res.status(500).json({ message: 'Lỗi khi lấy danh sách account' });
     }

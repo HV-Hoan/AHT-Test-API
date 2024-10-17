@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post</title>
+</head>
+
+<body>
+    <%- include('../inc/header') %>
+
+
+        <h2 style="text-align: center; color: rgb(255, 153, 0);">Danh sách tai khoan</h2>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <table border="1" class="table table-bordered border-black w-100">
+                        <thead>
+                            <tr>
+                                <th scope="col" style="width: 10%;">ID</th>
+                                <th scope="col" style="width: 10%;">fullname</th>
+                                <th scope="col" style="width: 10%;">username</th>
+                                <th scope="col" style="width: 10%;">password</th>
+                                <th scope="col" style="width: 10%;">email</th>
+                                <th scope="col" style="width: 10%;">phoneNumber</th>
+                                <th scope="col" style="width: 10%;">role</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% account.forEach((accounts)=> { %>
+                                <tr>
+                                    <td>
+                                        <%= accounts._id %>
+                                    </td>
+                                    <td>
+                                        <%= accounts.fullname %>
+                                    </td>
+                                    <td>
+                                        <%= accounts.username %>
+                                    </td>
+                                    <td>
+                                        <%= accounts.password %>
+                                    </td>
+                                    <td>
+                                        <%= accounts.email %>
+                                    </td>
+                                    <td>
+                                        <%= accounts.phoneNumber %>
+                                    </td>
+                                    <td>
+                                        <%= accounts.role %>
+                                    </td>
+
+                                </tr>
+                                <% }) %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+</body>
+
+</html>

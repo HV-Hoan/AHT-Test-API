@@ -26,7 +26,6 @@ exports.read = async (req, res, next) => {
 }
 
 exports.themRoom = async (req, res, next) => {
-
     try {
         // Kiểm tra xem req.user có tồn tại và có thuộc tính id không
         if (!req.user || !req.user._id) {
@@ -128,4 +127,3 @@ exports.delete = async (req, res, next) => {
         return json({ message: "Xoa that bai" })
     }
 }
-

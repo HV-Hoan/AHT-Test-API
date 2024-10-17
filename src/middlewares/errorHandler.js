@@ -1,8 +1,22 @@
-const errorHandler = async (err, req, res, next) => {
-    console.error('Có lỗi xảy ra:', err);
-    // res.status(500).json({ message: 'Có lỗi xảy ra, nhưng server vẫn tiếp tục chạy.' });
+const HttpError = require('../libs/httpError');
+const { NextFunction, Request, Response } = require('express');
 
-    next();
+const isDevelopment = process.env.NODE_ENV !== 'production';
+
+const errorHandler = (err, _req, res, _next) => {
+    const status = err instanceof HttpError ? err.statusCode : 500;
+    const message = err.message || 'Internal server error';
+
+    if (isDevelopment) {
+        console.error(err);
+    } else {
+        console.error(message);
+    }
+
+    res.status(status).json({
+        status,
+        message,
+        ...(isDevelopment ? { stack: err.stack } : {})
+    });
 };
-
 module.exports = errorHandler;

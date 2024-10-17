@@ -24,7 +24,6 @@ function bootstrap() {
     app.use(express.urlencoded({ extended: true }));
     app.use(express.json());
     app.use('/uploads', express.static('publics'));
-    // app.use('/publics', express.static(path.join(__dirname, '../public/uploads')));
 
     app.set('view engine', 'ejs');
     app.set('views', path.join(__dirname, '/views'));

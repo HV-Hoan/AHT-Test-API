@@ -10,6 +10,7 @@ const accountChema = new mongoose.Schema({
     password: { type: String, require: true },
     email: { type: String, require: true },
     phoneNumber: { type: String, require: true },
+    //condition: { type: String, enum: ['online', 'offline', 'ban'], default: 'offline' }, // trạng thái: hoạt động || bị ban
     role: { type: String, enum: ['user', 'admin', 'landlord'], default: 'user' },
 });
 

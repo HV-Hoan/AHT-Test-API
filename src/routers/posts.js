@@ -20,19 +20,17 @@ var storage = multer.diskStorage({
 
 var upload = multer({ storage: storage });
 
+routerPost.get('/list', verifyRole(['admin']), wrap(ctrlPost.list));
 
 
-routerPost.get('/list', verifyRole(['landlord', 'admin']), wrap(ctrlPost.list));
+routerPost.get('/add', wrap(ctrlPost.addPost));
+routerPost.post('/add', verifyRole(['admin']), upload.single('image'), wrap(ctrlPost.addPost));
 
+routerPost.get('/update/:id', wrap(ctrlPost.update1));
+routerPost.post('/update/:id', upload.single('image'), wrap(ctrlPost.update));
 
-routerPost.get('/add', verifyRole(['landlord', 'admin']), wrap(ctrlPost.addPost));
-routerPost.post('/add', verifyRole(['landlord', 'admin']), upload.single('image'), wrap(ctrlPost.addPost));
-
-routerPost.get('/update/:id', verifyRole(['landlord', 'admin']), wrap(ctrlPost.update1));
-routerPost.post('/update/:id', verifyRole(['landlord', 'admin']), upload.single('image'), wrap(ctrlPost.update));
-
-routerPost.get('/delete/:id', verifyRole(['landlord', 'admin']), wrap(ctrlPost.delete));
-routerPost.delete('/delete/:id', verifyRole(['landlord', 'admin']), wrap(ctrlPost.delete));
+routerPost.get('/delete/:id', wrap(ctrlPost.delete));
+routerPost.delete('/delete/:id', wrap(ctrlPost.delete));
 
 
 module.exports = routerPost;
